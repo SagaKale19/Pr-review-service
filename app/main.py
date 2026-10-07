@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app import models  # noqa: F401  (registers the models with Base)
 from app.config import settings
 from app.database import Base, engine, get_db
-
+from app.routers import reviews
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,7 +22,7 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
-
+app.include_router(reviews.router)
 
 @app.get("/health")
 def health_check(db: Session = Depends(get_db)):
